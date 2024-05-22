@@ -14,6 +14,7 @@ import {
   InputLabel,
   OutlinedInput,
   ListItemText,
+  TextFieldProps,
 } from "@mui/material";
 import { DatePicker } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
@@ -39,17 +40,23 @@ const Demo: React.FC = () => {
   const [checked, setChecked] = useState(false);
   const [singleSelect, setSingleSelect] = useState("");
   const [multiSelect, setMultiSelect] = useState<string[]>([]);
-  const [file, setFile] = useState<File | null>(null);
+  const [_file, setFile] = useState<File | null>(null);
   const [date, setDate] = useState<Date | null>(null);
 
   const handleLogin = () => {
     // Handle login logic here
   };
 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      setFile(event.target.files[0]);
+    }
+  };
+
   return (
-    <div className="w-screen h-screen flex items-center justify-center bg-gray-100">
+    <div style={{ width: '100vw', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f5f5f5' }}>
       <FormContainer>
-        <h2 className="text-2xl font-bold text-center text-green-700 mb-6">
+        <h2 style={{ fontSize: '24px', fontWeight: 'bold', textAlign: 'center', color: '#007B50', marginBottom: '24px' }}>
           ĐĂNG NHẬP
         </h2>
         <form
@@ -111,7 +118,7 @@ const Demo: React.FC = () => {
               />
             }
             label="Ghi nhớ tôi"
-            className="block text-right text-green-700 mt-2"
+            style={{ display: 'block', textAlign: 'right', color: '#007B50', marginTop: '8px' }}
           />
           <FormControl fullWidth margin="normal" variant="outlined">
             <InputLabel id="single-select-label">Lựa chọn đơn</InputLabel>
@@ -125,9 +132,9 @@ const Demo: React.FC = () => {
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
-              <MenuItem value={10}>Option 1</MenuItem>
-              <MenuItem value={20}>Option 2</MenuItem>
-              <MenuItem value={30}>Option 3</MenuItem>
+              <MenuItem value="10">Option 1</MenuItem>
+              <MenuItem value="20">Option 2</MenuItem>
+              <MenuItem value="30">Option 3</MenuItem>
             </Select>
           </FormControl>
           <FormControl fullWidth margin="normal" variant="outlined">
@@ -141,16 +148,16 @@ const Demo: React.FC = () => {
               input={<OutlinedInput label="Lựa chọn đa" />}
               renderValue={(selected) => selected.join(", ")}
             >
-              <MenuItem value={10}>
-                <Checkbox checked={multiSelect.indexOf(10) > -1} />
+              <MenuItem value="10">
+                <Checkbox checked={multiSelect.indexOf("10") > -1} />
                 <ListItemText primary="Option 1" />
               </MenuItem>
-              <MenuItem value={20}>
-                <Checkbox checked={multiSelect.indexOf(20) > -1} />
+              <MenuItem value="20">
+                <Checkbox checked={multiSelect.indexOf("20") > -1} />
                 <ListItemText primary="Option 2" />
               </MenuItem>
-              <MenuItem value={30}>
-                <Checkbox checked={multiSelect.indexOf(30) > -1} />
+              <MenuItem value="30">
+                <Checkbox checked={multiSelect.indexOf("30") > -1} />
                 <ListItemText primary="Option 3" />
               </MenuItem>
             </Select>
@@ -166,19 +173,19 @@ const Demo: React.FC = () => {
                 accept: "image/*, .pdf, .doc, .docx",
               },
             }}
-            onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)}
+            onChange={handleFileChange}
           />
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
               label="Chọn ngày"
               value={date}
-              onChange={(newDate) => setDate(newDate)}
-              renderInput={(params) => (
+              onChange={(newDate: Date | null) => setDate(newDate)}
+              renderInput={(params: TextFieldProps) => (
                 <TextField {...params} fullWidth margin="normal" />
               )}
             />
           </LocalizationProvider>
-          <a href="#" className="block text-right text-green-700 mt-2">
+          <a href="#" style={{ display: 'block', textAlign: 'right', color: '#007B50', marginTop: '8px' }}>
             Quên mật khẩu?
           </a>
           <Button
